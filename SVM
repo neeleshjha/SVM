@@ -1,0 +1,58 @@
+% x=trainip;%kfold1010ip;%trainip;%ashwini1(:,1:9);
+% y=trainop;%kfold1010op;%trainop;%ashwini1(:,10);
+% p=testip;%kfold1010testip;%testip;
+% q=testop;%kfold1010testop;%testop;
+% %indices = crossvalind('Kfold',y,10);
+% %cp = classperf(y); % initializes the CP object
+% 
+%        % train = [x,y];test=train;
+%     SVMModel = fitcsvm(x,y,'KernelFunction','linear','KernelScale','auto',...
+%     'OutlierFraction',0.05);
+% %class = classify(x(test),x(train),y(train));
+% 
+%  class = predict(SVMModel,p);
+% 
+%     % updates the CP object with the current classification results
+% 
+%     cp=classperf(class,q);
+%     %classperf(cp,class,test)
+%     figure, plotconfusion(class',q');
+
+% %cp.CorrectRate % queries for the correct classification rate
+
+% %%%%%%%%%%%%Hold out
+x=sinput2class;%ashwini1(:,1:9);
+y=soutput2class;%ashwini1(:,10);
+[Train, Test] = crossvalind('HoldOut', y, 0.33);
+SVMModel = fitcsvm(x(Train),y(Train),'KernelFunction','RBF','KernelScale','auto',...
+    'OutlierFraction',0.05);
+%class = classify(x(test),x(train),y(train));
+
+ class = predict(SVMModel, x(Test));
+  cp=classperf(class,y(Test));
+    %classperf(cp,class,test)
+    figure, plotconfusion(class',y(Test)');
+
+% %%%%%%%%%%%%leaveoneleaveout
+% x=ashwini1(:,1:9);
+% y=ashwini1(:,10);
+% %indices = crossvalind('LeaveMout',y,);
+% sse = 0;
+% N=699;
+% op=zeros(1,699);
+% op1=zeros(1,699);
+% for i = 1:699
+%     [Train,Test] = crossvalind('LeaveMOut',N,1);
+%     SVMModel = fitcsvm(x(Train),y(Train),'KernelFunction','RBF','KernelScale','auto',...
+%     'OutlierFraction',0.05);
+%      class = predict(SVMModel, x(Test))
+% %     yhat = polyval(polyfit(x(train),y(train),2),x(test));
+% %     sse = sse + sum((yhat - y(test)).^2);
+%      op(1,i)=class;
+%      op1(1,i)=y(Test);
+% %
+% end
+% %CVerr = sse / 100
+%   cp=classperf(op,op1)
+%     %classperf(cp,class,test)
+%     figure, plotconfusion(op,op1);
